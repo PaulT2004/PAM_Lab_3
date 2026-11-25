@@ -1,27 +1,35 @@
 import 'package:flutter/material.dart';
 
 class CoursesProgress extends StatelessWidget {
-  const CoursesProgress({super.key});
+  final Map<String, dynamic> data;
+
+  const CoursesProgress({
+    super.key,
+    required this.data,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final homeData = data['homePage'];
+    final planData = homeData['learningPlan'];
+    final items = planData['items'] as List;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 10),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            'Learning Plan',
-            style: TextStyle(
+            planData['title'],
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 22,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
-
-
 
         Container(
           margin: const EdgeInsets.all(20),
@@ -36,81 +44,59 @@ class CoursesProgress extends StatelessWidget {
               color: Colors.grey.shade300,
             ),
           ),
+
           child: Column(
             children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: 35,
-                    height: 35,
-                    child: CircularProgressIndicator(
-                      value: 40 / 48,
-                      strokeWidth: 5,
+              for (int i = 0; i < items.length; i++) ...[
+                Row(
+                  children: [
+                    Image.network(
+                      items[i]['progressIconUrl'],
+                      width: 35,
+                      height: 35,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.show_chart,
+                          size: 35,
+                          color: Colors.grey,
+                        );
+                      },
                     ),
-                  ),
-                  const SizedBox(width: 15),
-                  const Text(
-                    'Packaging Design',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const Spacer(),
-                  const Text(
-                    '40',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const Text(
-                    '/48',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
 
-              const SizedBox(height: 20),
+                    const SizedBox(width: 15),
 
-              Row(
-                children: [
-                  SizedBox(
-                    width: 35,
-                    height: 35,
-                    child: CircularProgressIndicator(
-                      value: 6 / 24,
-                      strokeWidth: 5,
+                    Expanded(
+                      child: Text(
+                        items[i]['title'],
+                        style: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 15),
-                  const Text(
-                    'Product Design',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.black,
+
+                    Text(
+                      '${items[i]['completed']}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  const Text(
-                    '6',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
+
+                    Text(
+                      '/${items[i]['total']}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                  const Text(
-                    '/24',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+
+                if (i < items.length - 1)
+                  const SizedBox(height: 20),
+              ],
             ],
           ),
         ),

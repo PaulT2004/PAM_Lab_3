@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
 
 class VideoDescription extends StatelessWidget {
-  const VideoDescription({super.key});
+  final Map<String, dynamic> data;
+
+  const VideoDescription({
+    super.key,
+    required this.data,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final coursePage = data['courseOverviewPage'];
+    final course = coursePage['course'];
+
+    final title = course['title'];
+    final duration = course['duration'];
+    final lessonCount = course['lessonCount'];
+    final rating = course['rating'];
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           const SizedBox(height: 20),
 
-          const Text(
-            'React Front To back',
-            style: TextStyle(
+          Text(
+            title,
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -27,7 +38,6 @@ class VideoDescription extends StatelessWidget {
 
           Row(
             children: [
-
               const Icon(
                 Icons.access_time,
                 color: Colors.grey,
@@ -36,27 +46,25 @@ class VideoDescription extends StatelessWidget {
 
               const SizedBox(width: 6),
 
-              const Text(
-                '6h 30m · 7 videos',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
+              Expanded(
+                child: Text(
+                  '$duration · $lessonCount videos',
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14,
+                  ),
                 ),
               ),
-
-              const Spacer(),
 
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 8,
                   vertical: 4,
                 ),
-
                 decoration: BoxDecoration(
                   color: Colors.lightBlue.shade100,
                   borderRadius: BorderRadius.circular(6),
                 ),
-
                 child: Row(
                   children: [
                     const Icon(
@@ -67,9 +75,9 @@ class VideoDescription extends StatelessWidget {
 
                     const SizedBox(width: 3),
 
-                    const Text(
-                      '4.9',
-                      style: TextStyle(
+                    Text(
+                      rating.toString(),
+                      style: const TextStyle(
                         color: Colors.red,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,

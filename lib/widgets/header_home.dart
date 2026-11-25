@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 
 class HeaderHome extends StatelessWidget {
-  const HeaderHome({super.key});
+  final Map<String, dynamic> data;
+
+  const HeaderHome({
+    super.key,
+    required this.data,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final homeData = data['homePage'];
+    final headerData = homeData['header'];
+
+    final greeting = headerData['greeting'];
+    final subtitle = headerData['subtitle'];
+    final avatarUrl = headerData['avatarUrl'];
+
     return Container(
       width: double.infinity,
       height: 150,
@@ -18,26 +30,25 @@ class HeaderHome extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
 
           children: [
-
-            const Column(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
                 Text(
-                  "Hi, Kristin",
-                  style: TextStyle(
+                  greeting,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
 
                 Text(
-                  "Let's start learning",
-                  style: TextStyle(
+                  subtitle,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                   ),
@@ -54,10 +65,23 @@ class HeaderHome extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
               ),
 
-              child: const Icon(
-                Icons.person,
-                size: 35,
-                color: Colors.blue,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+
+                child: Image.network(
+                  avatarUrl,
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(
+                      Icons.person,
+                      size: 35,
+                      color: Colors.blue,
+                    );
+                  },
+                ),
               ),
             ),
           ],
